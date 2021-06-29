@@ -73,7 +73,7 @@ function repl() {
         let ret = "\n";
         for (let j = 1; j < problemshtml.length; j++) {
             let instr = problems[j-1];
-            if (dict[parseInt(instr)]) problemshtml[j] = problemshtml[j].replace(instr+"<", `${lvcolor[dict[parseInt(instr)]]}${instr}${END}<`)
+            if (parseInt(instr) in dict) problemshtml[j] = problemshtml[j].replace(instr+"<", `${lvcolor[dict[parseInt(instr)]]}${instr}${END}<`)
             ret += problemshtml[j]+"\n";
         }
         i.innerHTML = ret;
