@@ -47,21 +47,22 @@ let username = window.location.pathname; //사이트에서 현재 위치 알아�
 let un = username.substring(6, username.length);
 
 let dict = {};
-
-let url = 'https://solved.ac/api/v3/search/problem?query=solved_by:'+un;
-fetch(url)
-    .then(res => res.json())
-    .then(data => {
-        for (let i = 0; i < 100; i++) {
-            try {
-                dict[data.items[i].problemId] = data.items[i].level;
+for (let page = 1; page < 5; page++) {
+    let url = `https://solved.ac/api/v3/search/problem?query=solved_by:${un}&page=${page}`;
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            for (let i = 0; i < 100; i++) {
+                try {
+                    dict[data.items[i].problemId] = data.items[i].level;
+                }
+                catch (error) {
+                    break;
+                }
             }
-            catch (error) {
-                break;
-            }
-        }
-        repl();
-    });
+            repl();
+        });
+}
 
 function repl() {
     let arr = document.getElementsByClassName("panel-body");
