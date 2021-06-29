@@ -1,11 +1,11 @@
-const END = "</span>";
-const ZERO = "<span style=\'color:#000000\'>";
-const BRONZE = "<span style=\'color:#8B4513\'>";
-const SILVER = "<span style=\'color:#828282\'>";
-const GOLD = "<span style=\'color:#CD8B45\'>";
-const PLATINIUM = "<span style=\'color:#46BD7B\'>";
-const DIAMOND = "<span style=\'color:#32B2B2\'>";
-const RUBY = "<span style=\'color:#CD3861\'>";
+let END = "</span>";
+let ZERO = "<span style=\'color:#000000\'>";
+let BRONZE = "<span style=\'color:#8B4513\'>";
+let SILVER = "<span style=\'color:#828282\'>";
+let GOLD = "<span style=\'color:#CD8B45\'>";
+let PLATINIUM = "<span style=\'color:#46BD7B\'>";
+let DIAMOND = "<span style=\'color:#32B2B2\'>";
+let RUBY = "<span style=\'color:#CD3861\'>";
 
 let lvcolor = {
     0: ZERO,
@@ -48,15 +48,12 @@ let un = username.substring(6, username.length);
 
 let dict = {};
 
-console.log(un);
-
 let url = 'https://solved.ac/api/v3/search/problem?query=solved_by:'+un;
 fetch(url)
     .then(res => res.json())
     .then(data => {
         for (let i = 0; i < 100; i++) {
             try {
-                console.log(data.items[i].titleKo);
                 dict[data.items[i].problemId] = data.items[i].level;
             }
             catch (error) {
@@ -66,15 +63,20 @@ fetch(url)
         }
     });
 
-console.log(dict)
-
 function repl() {
     let arr = document.getElementsByClassName("panel-body");
     for (let i of arr) {
         let now = i.innerHTML;
         let str = i.innerText;
-        if (!lvcolor[str]) continue;
-        now = now.replace(str, `${lvcolor[str]}${str}${END}`)
-        i.innerHTML = now;
+        let problemshtml = now.split("\n");
+        let problems = str.split(" ");
+        let ret = "\n";
+        for (let j = 1; j < problemshtml.length; j++) {
+            let instr = problems[j-1];
+            if (!dict[parseInt(instr)]) continue;
+            problemshtml[j] = problemshtml[j].replace(instr+"<", `${lvcolor[dict[parseInt(instr)]]}${instr}${END}<`)
+            ret += problemshtml[j]+"\n";
+        }
+        i.innerHTML = ret;
     }
 }
