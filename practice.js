@@ -48,20 +48,15 @@ let un = username.substring(6, username.length);
 
 let dict = {};
 
-let url = 'https://solved.ac/api/v3/search/problem?query=solved_by:'+un;
-fetch(url)
+fetch("level.json")
     .then(res => res.json())
     .then(data => {
-        for (let i = 0; i < 100; i++) {
-            try {
-                dict[data.items[i].problemId] = data.items[i].level;
-            }
-            catch (error) {
-                break;
-            }
+        for (var key in data) {
+            console.log(key);
+            dict[key] = data[key];
         }
-        repl();
     });
+
 
 function repl() {
     let arr = document.getElementsByClassName("panel-body");
@@ -79,3 +74,5 @@ function repl() {
         i.innerHTML = ret;
     }
 }
+
+repl();
