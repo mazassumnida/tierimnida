@@ -1,0 +1,18 @@
+
+{
+    "manifest_version": 2,
+    "name": "BOJ-Color-Label",
+    "description": "BOJ문제번호에 색깔을 추가해줍니다.",
+    "version": "1.0",
+    "content_scripts": [
+      {
+        "matches": [
+          "http://www.acmicpc.net/user*",
+          "https://www.acmicpc.net/user*"
+        ],
+        "js": [
+          "practice.js"
+        ]
+      }
+    ]
+  }
