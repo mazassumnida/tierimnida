@@ -3,8 +3,8 @@ let ZERO = "<span style=\'color:#000000\'>";
 let BRONZE = "<span style=\'color:#8B4513\'>";
 let SILVER = "<span style=\'color:#828282\'>";
 let GOLD = "<span style=\'color:#CD8B45\'>";
-let PLATINIUM = "<span style=\'color:#46BD7B\'>";
-let DIAMOND = "<span style=\'color:#32B2B2\'>";
+let PLATINIUM = "<span style=\'color:#22D6B2\'>";
+let DIAMOND = "<span style=\'color:#00AFFF\'>";
 let RUBY = "<span style=\'color:#CD3861\'>";
 
 let lvcolor = {
@@ -71,11 +71,13 @@ function repl() {
         let problemshtml = now.split("\n");
         let problems = str.split(" ");
         let ret = "\n";
+        console.log(problemshtml);
         for (let j = 1; j < problemshtml.length; j++) {
             let instr = problems[j-1];
             if (!dict[parseInt(instr)]) continue;
             problemshtml[j] = problemshtml[j].replace(instr+"<", `${lvcolor[dict[parseInt(instr)]]}${instr}${END}<`)
             ret += problemshtml[j]+"\n";
+            console.log(problemshtml[j]);
         }
         i.innerHTML = ret;
     }
