@@ -4,6 +4,9 @@
     "name": "BOJ-Color-Label",
     "description": "BOJ문제번호에 색깔을 추가해줍니다.",
     "version": "1.0",
+    "permissions": [
+      "storage"
+    ],
     "content_scripts": [
       {
         "matches": [
