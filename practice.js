@@ -47,9 +47,9 @@ let url = `https://swoonpract1.herokuapp.com/swoon`;
 fetch(url)
     .then(res => res.json())
     .then(data => {
-        $.each(data, function(key, value) {
-            dict[key] = value;
-        });
+        for (key in data) {
+            dict[key] = data[key];
+        }
         repl();
     });
 
