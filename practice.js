@@ -2,7 +2,7 @@ let END = "</span>";
 let ZERO = "<span style=\'color:#000000\'>";
 let BRONZE = "<span style=\'color:#8B4513\'>";
 let SILVER = "<span style=\'color:#5A78AF\'>";
-let GOLD = "<span style=\'color:#FFC81E\'>";
+let GOLD = "<span style=\'color:#FFAF0A\'>";
 let PLATINIUM = "<span style=\'color:#22D6B2\'>";
 let DIAMOND = "<span style=\'color:#00AFFF\'>";
 let RUBY = "<span style=\'color:#CD3861\'>";
@@ -41,22 +41,29 @@ let lvcolor = {
     30: RUBY
 }
 
+
 let username = window.location.pathname; //사이트에서 현재 위치 알아내기
 //Ex) /user/swoon 형태로 반환
 
 let un = username.substring(6, username.length);
 
 let dict = {};
-
-fetch("level.json")
-    .then(res => res.json())
-    .then(data => {
-        for (var key in data) {
-            console.log(key);
-            dict[key] = data[key];
-        }
-    });
-
+for (let page = 1; page < 5; page++) {
+    let url = `https://solved.ac/api/v3/search/problem?query=solved_by:${un}&page=${page}`;
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            for (let i = 0; i < 100; i++) {
+                try {
+                    dict[data.items[i].problemId] = data.items[i].level;
+                }
+                catch (error) {
+                    break;
+                }
+            }
+            repl();
+        });
+}
 
 function repl() {
     let arr = document.getElementsByClassName("panel-body");
@@ -74,5 +81,3 @@ function repl() {
         i.innerHTML = ret;
     }
 }
-
-repl();
