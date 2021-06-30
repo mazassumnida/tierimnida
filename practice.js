@@ -5,7 +5,7 @@ let SILVER = "<span style=\'color:#5A78AF\'>";
 let GOLD = "<span style=\'color:#FFAF0A\'>";
 let PLATINIUM = "<span style=\'color:#22D6B2\'>";
 let DIAMOND = "<span style=\'color:#00AFFF\'>";
-let RUBY = "<span style=\'color:#CD3861\'>";
+let RUBY = "<span style=\'color:#FF5675\'>";
 
 let lvcolor = {
     0: ZERO,
