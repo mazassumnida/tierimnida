@@ -5,7 +5,7 @@ let SILVER = "<span style=\'color:#5A78AF\'>";
 let GOLD = "<span style=\'color:#FFAF0A\'>";
 let PLATINIUM = "<span style=\'color:#22D6B2\'>";
 let DIAMOND = "<span style=\'color:#00AFFF\'>";
-let RUBY = "<span style=\'color:#CD3861\'>";
+let RUBY = "<span style=\'color:#FF5675\'>";
 
 let lvcolor = {
     0: ZERO,
@@ -41,28 +41,20 @@ let lvcolor = {
     30: RUBY
 }
 
-let username = window.location.pathname; //사이트에서 현재 위치 알아내기
-//Ex) /user/swoon 형태로 반환
+var dict = {};
 
-let un = username.substring(6, username.length);
 
-let dict = {};
-for (let page = 1; page < 5; page++) {
-    let url = `https://solved.ac/api/v3/search/problem?query=solved_by:${un}&page=${page}`;
-    fetch(url)
-        .then(res => res.json())
-        .then(data => {
-            for (let i = 0; i < 100; i++) {
-                try {
-                    dict[data.items[i].problemId] = data.items[i].level;
-                }
-                catch (error) {
-                    break;
-                }
-            }
-            repl();
-        });
-}
+let url = `https://swoonpract1.herokuapp.com/swoon`;
+fetch(url)
+    .then(res => res.json())
+    .then(data => {
+        for (key in data) {
+            dict[key] = data[key];
+        }
+        repl();
+    });
+
+
 
 function repl() {
     let arr = document.getElementsByClassName("panel-body");
