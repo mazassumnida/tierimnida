@@ -114,7 +114,6 @@ function repl() {
       }
       ret += problemshtml[j] + "\n";
     }
-    console.log(ret);
     tempArr[i].innerHTML = ret;
   }
 }
