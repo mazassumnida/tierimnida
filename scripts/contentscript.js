@@ -87,7 +87,6 @@ chrome.extension.onMessage.addListener(function (msg, sender, sendResponse) {
       ret += infos[2]+"\n";
     }
     tempArr[i].innerHTML = ret;
-    console.log(ret);
   }
 
 });
