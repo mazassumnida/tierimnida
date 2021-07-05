@@ -9,7 +9,9 @@ let PLATINIUM = "<span style='color:#22D6B2'>";
 let DIAMOND = "<span style='color:#00AFFF'>";
 let RUBY = "<span style='color:#FF5675'>";
 
-let tmpArr;
+var innerDict = {};
+
+
 
 let lvcolor = {
   0: ZERO,
@@ -55,74 +57,62 @@ fetch(url)
       dict[key] = data[key];
     }
     repl();
+    for (var i in innerDict) {
+      console.log(i, innerDict[i]);
+    }
   });
 
 chrome.extension.onMessage.addListener(function (msg, sender, sendResponse) {
   if (msg.action === "TOGGLE_SORT") {
-    let arrSort = document.getElementsByClassName("panel-body");
-    tmpArr = arrSort;
-    console.log(arrSort);
-    for (let i of arrSort) {
-      let now = i.innerHTML;
-      let str = i.innerText;
-      let problemshtml = now.split("\n");
-      let problems = str.split(" ");
-      let ret = "\n";
-      for (let j = 1; j < problemshtml.length; j++) {
-        let instr = problems[j - 1];
-        if (parseInt(instr) in dict)
-          problemshtml[j] = problemshtml[j].replace(
-            instr + "<",
-            `"TOGGLED"${instr}${END}<`
-          );
-        ret += problemshtml[j] + "\n";
-      }
-      i.innerHTML = ret;
+
+    for (let i = 0; i < tempArr.length; i++) {
+      innerDict[i].sort(function(a, b) {
+        if (a[0] == b[0]) return a[1] - b[1];
+        return b[0] - a[0];
+      });
+    }
+  }
+  if (msg.action === "TOGGLE_ORIGIN") {
+
+    for (let i = 0; i < tempArr.length; i++) {
+      innerDict[i].sort(function(a, b) {
+        return a[1] - b[1];
+      });
     }
   }
 
-  if (msg.action === "TOGGLE_ORIGIN") {
-    console.log("toggle origin");
-    let arr = tmpArr;
-    for (let i of arr) {
-      let now = i.innerHTML;
-      let str = i.innerText;
-      let problemshtml = now.split("\n");
-      let problems = str.split(" ");
-      let ret = "\n";
-      for (let j = 1; j < problemshtml.length; j++) {
-        let instr = problems[j - 1];
-        if (parseInt(instr) in dict)
-          problemshtml[j] = problemshtml[j].replace(
-            instr + "<",
-            `${lvcolor[dict[parseInt(instr)]]}${instr}${END}<`
-          );
-        ret += problemshtml[j] + "\n";
-      }
-      i.innerHTML = ret;
+  for (let i = 0; i < tempArr.length; i++) {
+    let ret = "\n";
+    for (let infos of innerDict[i]) {
+      ret += infos[2]+"\n";
     }
+    tempArr[i].innerHTML = ret;
   }
+
 });
 
 function repl() {
   console.log("repl");
   let arr = document.getElementsByClassName("panel-body");
+  tempArr = arr;
   console.log(arr);
-  for (let i of arr) {
-    let now = i.innerHTML;
-    let str = i.innerText;
+
+  for (let i = 0; i < tempArr.length; i++) {
+    innerDict[i] = [];
+    let now = tempArr[i].innerHTML;
+    let str = tempArr[i].innerText;
     let problemshtml = now.split("\n");
     let problems = str.split(" ");
+    problems.unshift("23");
     let ret = "\n";
     for (let j = 1; j < problemshtml.length; j++) {
-      let instr = problems[j - 1];
-      if (parseInt(instr) in dict)
-        problemshtml[j] = problemshtml[j].replace(
-          instr + "<",
-          `${lvcolor[dict[parseInt(instr)]]}${instr}${END}<`
-        );
+      let instr = parseInt(problems[j]);
+      if (instr in dict) {
+        problemshtml[j] = problemshtml[j].replace(instr + "<",`${lvcolor[dict[instr]]}${instr}${END}<`);
+        innerDict[i].push([dict[instr], instr, problemshtml[j]]);
+      }
       ret += problemshtml[j] + "\n";
     }
-    i.innerHTML = ret;
+    tempArr[i].innerHTML = ret;
   }
 }
