@@ -11,3 +11,8 @@ document.getElementById("toggle_origin").onclick = function () {
     console.log("toggle origin");
   });
 };
+
+var check = $("input[type='checkbox']");
+check.click(function () {
+  $("p").toggle();
+});
