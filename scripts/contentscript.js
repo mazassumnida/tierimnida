@@ -11,8 +11,6 @@ let RUBY = "<span style='color:#FF5675'>";
 
 var innerDict = {};
 
-
-
 let lvcolor = {
   0: ZERO,
   1: BRONZE,
@@ -62,33 +60,38 @@ fetch(url)
     }
   });
 
+console.log("temp");
+
 chrome.extension.onMessage.addListener(function (msg, sender, sendResponse) {
-  if (msg.action === "TOGGLE_SORT") {
+  if (msg.action === "TOGGLE") {
+    chrome.storage.local.get("enabled", (data) => {
+      console.log("local storage get");
+      if (data.enabled) {
+        console.log("data sort");
+        for (let i = 0; i < tempArr.length; i++) {
+          innerDict[i].sort(function (a, b) {
+            return a[1] - b[1];
+          });
+        }
+      } else {
+        console.log("sort disabled");
+        for (let i = 0; i < tempArr.length; i++) {
+          innerDict[i].sort(function (a, b) {
+            if (a[0] == b[0]) return a[1] - b[1];
+            return b[0] - a[0];
+          });
+        }
+      }
+    });
 
     for (let i = 0; i < tempArr.length; i++) {
-      innerDict[i].sort(function(a, b) {
-        if (a[0] == b[0]) return a[1] - b[1];
-        return b[0] - a[0];
-      });
+      let ret = "\n";
+      for (let infos of innerDict[i]) {
+        ret += infos[2] + "\n";
+      }
+      tempArr[i].innerHTML = ret;
     }
   }
-  if (msg.action === "TOGGLE_ORIGIN") {
-
-    for (let i = 0; i < tempArr.length; i++) {
-      innerDict[i].sort(function(a, b) {
-        return a[1] - b[1];
-      });
-    }
-  }
-
-  for (let i = 0; i < tempArr.length; i++) {
-    let ret = "\n";
-    for (let infos of innerDict[i]) {
-      ret += infos[2]+"\n";
-    }
-    tempArr[i].innerHTML = ret;
-  }
-
 });
 
 function repl() {
@@ -108,7 +111,10 @@ function repl() {
     for (let j = 1; j < problemshtml.length; j++) {
       let instr = parseInt(problems[j]);
       if (instr in dict) {
-        problemshtml[j] = problemshtml[j].replace(instr + "<",`${lvcolor[dict[instr]]}${instr}${END}<`);
+        problemshtml[j] = problemshtml[j].replace(
+          instr + "<",
+          `${lvcolor[dict[instr]]}${instr}${END}<`
+        );
         innerDict[i].push([dict[instr], instr, problemshtml[j]]);
       }
       ret += problemshtml[j] + "\n";
