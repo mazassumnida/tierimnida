@@ -84,6 +84,7 @@ chrome.extension.onMessage.addListener(function (msg, sender, sendResponse) {
       }
     });
 
+    console.log("sort end");
     for (let i = 0; i < tempArr.length; i++) {
       let ret = "\n";
       for (let infos of innerDict[i]) {
@@ -99,6 +100,24 @@ function repl() {
   let arr = document.getElementsByClassName("panel-body");
   tempArr = arr;
   console.log(arr);
+
+  chrome.storage.local.get("enabled", (data) => {
+    if (data.enabled) {
+      console.log("data sort");
+      for (let i = 0; i < tempArr.length; i++) {
+        innerDict[i].sort(function (a, b) {
+          return a[1] - b[1];
+        });
+      }
+    } else {
+      for (let i = 0; i < tempArr.length; i++) {
+        innerDict[i].sort(function (a, b) {
+          if (a[0] == b[0]) return a[1] - b[1];
+          return b[0] - a[0];
+        });
+      }
+    }
+  });
 
   for (let i = 0; i < tempArr.length; i++) {
     innerDict[i] = [];
