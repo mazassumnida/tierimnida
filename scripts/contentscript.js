@@ -70,28 +70,27 @@ chrome.extension.onMessage.addListener(function (msg, sender, sendResponse) {
         console.log("data sort");
         for (let i = 0; i < tempArr.length; i++) {
           innerDict[i].sort(function (a, b) {
-            return a[1] - b[1];
+            if (a[0] == b[0]) return a[1] - b[1];
+            return b[0] - a[0];
           });
         }
       } else {
         console.log("sort disabled");
         for (let i = 0; i < tempArr.length; i++) {
           innerDict[i].sort(function (a, b) {
-            if (a[0] == b[0]) return a[1] - b[1];
-            return b[0] - a[0];
+            return a[1] - b[1];
           });
         }
       }
-    });
-
-    console.log("sort end");
-    for (let i = 0; i < tempArr.length; i++) {
-      let ret = "\n";
-      for (let infos of innerDict[i]) {
-        ret += infos[2] + "\n";
+      console.log("sort end");
+      for (let i = 0; i < tempArr.length; i++) {
+        let ret = "\n";
+        for (let infos of innerDict[i]) {
+          ret += infos[2] + "\n";
+        }
+        tempArr[i].innerHTML = ret;
       }
-      tempArr[i].innerHTML = ret;
-    }
+    });
   }
 });
 
@@ -126,7 +125,6 @@ function repl() {
   chrome.storage.local.get("enabled", (data) => {
     if (data.enabled) {
       console.log("data sort");
-
       for (let i = 0; i < tempArr.length; i++) {
         innerDict[i].sort(function (a, b) {
           if (a[0] == b[0]) return a[1] - b[1];

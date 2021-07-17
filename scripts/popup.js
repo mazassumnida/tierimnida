@@ -1,4 +1,4 @@
-var enabled = false; //disabled by default
+var enabled = true; //disabled by default
 var myButton = document.getElementById("toggle");
 // chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 //   if (typeof message === "object" && message.type === "reload") {
