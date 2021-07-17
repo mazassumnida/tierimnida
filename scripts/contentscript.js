@@ -55,51 +55,45 @@ fetch(url)
       dict[key] = data[key];
     }
     repl();
-    for (var i in innerDict) {
-      console.log(i, innerDict[i]);
-    }
   });
-
-console.log("temp");
 
 chrome.extension.onMessage.addListener(function (msg, sender, sendResponse) {
   if (msg.action === "TOGGLE") {
     chrome.storage.local.get("enabled", (data) => {
-      console.log("local storage get");
-      if (data.enabled) {
-        console.log("data sort");
-        for (let i = 0; i < tempArr.length; i++) {
-          innerDict[i].sort(function (a, b) {
-            if (a[0] == b[0]) return a[1] - b[1];
-            return b[0] - a[0];
-          });
-        }
-      } else {
-        console.log("sort disabled");
-        for (let i = 0; i < tempArr.length; i++) {
-          innerDict[i].sort(function (a, b) {
-            return a[1] - b[1];
-          });
-        }
-      }
-      console.log("sort end");
-      for (let i = 0; i < tempArr.length; i++) {
-        let ret = "\n";
-        for (let infos of innerDict[i]) {
-          ret += infos[2] + "\n";
-        }
-        tempArr[i].innerHTML = ret;
-      }
+      sort(data);
     });
   }
 });
 
+function sort(data) {
+  if (data.enabled) {
+    //console.log("data sort");
+    for (let i = 0; i < tempArr.length; i++) {
+      innerDict[i].sort(function (a, b) {
+        if (a[0] == b[0]) return a[1] - b[1];
+        return b[0] - a[0];
+      });
+    }
+  } else {
+    //console.log("sort disabled");
+    for (let i = 0; i < tempArr.length; i++) {
+      innerDict[i].sort(function (a, b) {
+        return a[1] - b[1];
+      });
+    }
+  }
+  for (let i = 0; i < tempArr.length; i++) {
+    let ret = "\n";
+    for (let infos of innerDict[i]) {
+      ret += infos[2] + "\n";
+    }
+    tempArr[i].innerHTML = ret;
+  }
+}
+
 function repl() {
-  console.log("repl");
   let arr = document.getElementsByClassName("panel-body");
   tempArr = arr;
-  console.log(arr);
-
   for (let i = 0; i < tempArr.length; i++) {
     innerDict[i] = [];
     let now = tempArr[i].innerHTML;
@@ -123,28 +117,6 @@ function repl() {
   }
 
   chrome.storage.local.get("enabled", (data) => {
-    if (data.enabled) {
-      console.log("data sort");
-      for (let i = 0; i < tempArr.length; i++) {
-        innerDict[i].sort(function (a, b) {
-          if (a[0] == b[0]) return a[1] - b[1];
-          return b[0] - a[0];
-        });
-      }
-    } else {
-      console.log("sort disable");
-      for (let i = 0; i < tempArr.length; i++) {
-        innerDict[i].sort(function (a, b) {
-          return a[1] - b[1];
-        });
-      }
-    }
-    for (let i = 0; i < tempArr.length; i++) {
-      let ret = "\n";
-      for (let infos of innerDict[i]) {
-        ret += infos[2] + "\n";
-      }
-      tempArr[i].innerHTML = ret;
-    }
+    sort(data);
   });
 }

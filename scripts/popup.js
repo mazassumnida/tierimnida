@@ -1,19 +1,10 @@
-var enabled = true; //disabled by default
+var enabled = true; //초기 정렬상태
 var myButton = document.getElementById("toggle");
-// chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-//   if (typeof message === "object" && message.type === "reload") {
-//     console.log("reloaded");
-//     chrome.storage.get("enabled", (data) => {
-//       data.enabled = enabled;
-//     });
-//   }
-// });
 chrome.storage.local.get("enabled", (data) => {
   enabled = data.enabled;
   myButton.textContent = enabled ? "Disable" : "Sort";
 });
 myButton.onclick = () => {
-  console.log("onclick");
   enabled = !enabled;
   myButton.textContent = enabled ? "Disable" : "Sort";
   chrome.storage.local.set({ enabled: enabled });
