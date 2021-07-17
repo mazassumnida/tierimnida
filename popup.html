@@ -8,7 +8,7 @@
       .switch {
         position: relative;
         display: inline-block;
-        width: 60px;
+        width: 85px;
         height: 34px;
         vertical-align: middle;
       }
@@ -27,8 +27,8 @@
         right: 0;
         bottom: 0;
         background-color: #ccc;
-        -webkit-transition: 0.4s;
-        transition: 0.4s;
+        -webkit-transition: 0.2s;
+        transition: 0.2s;
       }
 
       .slider:before {
@@ -39,8 +39,8 @@
         left: 4px;
         bottom: 4px;
         background-color: white;
-        -webkit-transition: 0.4s;
-        transition: 0.4s;
+        -webkit-transition: 0.2s;
+        transition: 0.2s;
       }
 
       input:checked + .slider {
@@ -54,7 +54,7 @@
       input:checked + .slider:before {
         -webkit-transform: translateX(26px);
         -ms-transform: translateX(26px);
-        transform: translateX(26px);
+        transform: translateX(50px);
       }
 
       /* Rounded sliders */
@@ -65,12 +65,21 @@
       .slider.round:before {
         border-radius: 50%;
       }
+      /*------ ADDED CSS ---------*/
+      .slider:after {
+        content: "OFF";
+        color: black;
+        display: block;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        top: 50%;
+        left: 50%;
+        font-size: 10px;
+        font-family: Verdana, sans-serif;
+      }
 
-      p {
-        margin: 0px;
-        display: inline-block;
-        font-size: 15px;
-        font-weight: bold;
+      input:checked + .slider:after {
+        content: "ON";
       }
     </style>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -78,7 +87,11 @@
     <title>Document</title>
   </head>
   <body>
-    <button id="toggle"></button>
+    <label class="switch">
+      <input type="checkbox" />
+      <span class="slider round"></span>
+    </label>
+
     <script src="./scripts/popup.js"></script>
   </body>
 </html>
