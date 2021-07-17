@@ -3,3 +3,8 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     chrome.pageAction.show(sender.tab.id);
   }
 });
+chrome.webNavigation.onCommitted.addListener(function (data) {
+  if (data.transitionType == "reload") {
+    chrome.runtime.sendMessage({ type: "reload" });
+  }
+});
