@@ -83,6 +83,10 @@ input:checked + .slider:after {
 .grid_item {
   margin: 5px;
 }
+.grid_item.icon {
+  margin-top: 0px;
+  margin-left: 20px;
+}
 .grid_switch {
   width: 150px;
   display: flex;
@@ -96,4 +100,5 @@ input:checked + .slider:after {
   width: 40px;
   margin-top: 5px;
   margin-right: 10px;
+  margin-left: 5px;
 }
