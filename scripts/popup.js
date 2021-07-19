@@ -1,23 +1,18 @@
-var enabled = true; //disabled by default
+var enabled = true; //초기 정렬상태
 var myButton = document.getElementById("toggle");
-// chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-//   if (typeof message === "object" && message.type === "reload") {
-//     console.log("reloaded");
-//     chrome.storage.get("enabled", (data) => {
-//       data.enabled = enabled;
-//     });
-//   }
-// });
+var check = $("input[type='checkbox']");
+
 chrome.storage.local.get("enabled", (data) => {
   enabled = data.enabled;
-  myButton.textContent = enabled ? "Disable" : "Sort";
+  if (enabled) {
+    $("input:checkbox").prop("checked", true);
+  }
 });
-myButton.onclick = () => {
-  console.log("onclick");
+
+check.click(function () {
   enabled = !enabled;
-  myButton.textContent = enabled ? "Disable" : "Sort";
   chrome.storage.local.set({ enabled: enabled });
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     chrome.tabs.sendMessage(tabs[0].id, { action: "TOGGLE" });
   });
-};
+});

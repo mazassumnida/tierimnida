@@ -3,82 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <script src="./scripts/jquery.js"></script>
-    <style>
-      /* The switch - the box around the slider */
-      .switch {
-        position: relative;
-        display: inline-block;
-        width: 60px;
-        height: 34px;
-        vertical-align: middle;
-      }
-
-      /* Hide default HTML checkbox */
-      .switch input {
-        display: none;
-      }
-
-      /* The slider */
-      .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        -webkit-transition: 0.4s;
-        transition: 0.4s;
-      }
-
-      .slider:before {
-        position: absolute;
-        content: "";
-        height: 26px;
-        width: 26px;
-        left: 4px;
-        bottom: 4px;
-        background-color: white;
-        -webkit-transition: 0.4s;
-        transition: 0.4s;
-      }
-
-      input:checked + .slider {
-        background-color: #2196f3;
-      }
-
-      input:focus + .slider {
-        box-shadow: 0 0 1px #2196f3;
-      }
-
-      input:checked + .slider:before {
-        -webkit-transform: translateX(26px);
-        -ms-transform: translateX(26px);
-        transform: translateX(26px);
-      }
-
-      /* Rounded sliders */
-      .slider.round {
-        border-radius: 34px;
-      }
-
-      .slider.round:before {
-        border-radius: 50%;
-      }
-
-      p {
-        margin: 0px;
-        display: inline-block;
-        font-size: 15px;
-        font-weight: bold;
-      }
-    </style>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css" type="text/css" />
     <title>Document</title>
   </head>
   <body>
-    <button id="toggle"></button>
+    <div class="grid">
+      <img
+        class="grid_item"
+        src="./icon.png"
+        alt="icon image"
+        width="20px"
+        height="20px"
+      />
+      <div class="grid_item title">BOJ-Color-Label</div>
+    </div>
+
+    <div class="grid_switch">
+      <div class="switch title">난이도 순 정렬</div>
+      <label class="switch button">
+        <input type="checkbox" />
+        <span class="slider round"></span>
+      </label>
+    </div>
+
     <script src="./scripts/popup.js"></script>
   </body>
 </html>
