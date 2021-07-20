@@ -7,4 +7,4 @@ BOJ 유저 정보란의 문제 번호들을 해당 문제의 티어색으로 칠
 
 # 확장 적용시키는 법
 
-https://chrome.google.com/webstore/detail/tierimnida/mgdddbhbedfjdodjccjefgbdgkglokdg/related?hl=ko&
+https://chrome.google.com/webstore/detail/tierimnida/mgdddbhbedfjdodjccjefgbdgkglokdg
