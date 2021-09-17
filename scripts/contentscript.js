@@ -98,16 +98,15 @@ function repl() {
     innerDict[i] = [];
     let now = tempArr[i].innerHTML;
     let str = tempArr[i].innerText;
-    let problemshtml = now.split("\n");
+    let problemshtml = now.split("/a>");
     let problems = str.split(" ");
-    problems.unshift("23");
     let ret = "\n";
     for (let j = 1; j < problemshtml.length; j++) {
       let instr = parseInt(problems[j]);
       if (instr in dict) {
         problemshtml[j] = problemshtml[j].replace(
           instr + "<",
-          `${lvcolor[dict[instr]]}${instr}${END}<`
+          `${lvcolor[dict[instr]]}${instr}${END}</a>`
         );
         innerDict[i].push([dict[instr], instr, problemshtml[j]]);
       }
