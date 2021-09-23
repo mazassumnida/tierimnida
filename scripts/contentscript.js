@@ -101,7 +101,7 @@ function repl() {
     let problemshtml = now.split("/a>");
     let problems = str.split(" ");
     let ret = "\n";
-    for (let j = 1; j < problemshtml.length; j++) {
+    for (let j = 0; j < problemshtml.length; j++) {
       let instr = parseInt(problems[j]);
       if (instr in dict) {
         problemshtml[j] = problemshtml[j].replace(
