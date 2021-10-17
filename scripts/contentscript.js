@@ -1,17 +1,17 @@
 chrome.runtime.sendMessage({ type: "showPageAction" });
 
-let END = "</span>";
-let ZERO = "<span style='color:#000000'>";
-let BRONZE = "<span style='color:#8B4513'>";
-let SILVER = "<span style='color:#5A78AF'>";
-let GOLD = "<span style='color:#FFAF0A'>";
-let PLATINIUM = "<span style='color:#22D6B2'>";
-let DIAMOND = "<span style='color:#00AFFF'>";
-let RUBY = "<span style='color:#FF5675'>";
+const END = "</span>";
+const ZERO = "<span style='color:#000000'>";
+const BRONZE = "<span style='color:#8B4513'>";
+const SILVER = "<span style='color:#5A78AF'>";
+const GOLD = "<span style='color:#FFAF0A'>";
+const PLATINIUM = "<span style='color:#22D6B2'>";
+const DIAMOND = "<span style='color:#00AFFF'>";
+const RUBY = "<span style='color:#FF5675'>";
 
-var innerDict = {};
+let innerDict = {};
 
-let lvcolor = {
+const lvcolor = {
   0: ZERO,
   1: BRONZE,
   2: BRONZE,
@@ -45,9 +45,11 @@ let lvcolor = {
   30: RUBY,
 };
 
-var dict = {};
+let dict = {};
 
-let url = `https://swoonpract1.herokuapp.com/swoon`;
+const htmlBodyList = [];
+
+const url = `https://swoonpract1.herokuapp.com/swoon`;
 fetch(url)
   .then((res) => res.json())
   .then((data) => {
@@ -57,47 +59,47 @@ fetch(url)
     repl();
   });
 
-chrome.extension.onMessage.addListener(function (msg, sender, sendResponse) {
+chrome.extension.onMessage.addListener((msg) => {
   if (msg.action === "TOGGLE") {
     chrome.storage.local.get("enabled", (data) => {
-      sort(data);
+      sortData(data);
     });
   }
 });
 
-function sort(data) {
+const sortData = (data) => {
   if (data.enabled) {
-    //console.log("data sort");
-    for (let i = 0; i < tempArr.length; i++) {
-      innerDict[i].sort(function (a, b) {
+    //console.log("data sortData");
+    for (let i = 0; i < htmlBodyList.length; i++) {
+      innerDict[i].sort((a, b) => {
         if (a[0] == b[0]) return a[1] - b[1];
         return b[0] - a[0];
       });
     }
   } else {
-    //console.log("sort disabled");
-    for (let i = 0; i < tempArr.length; i++) {
-      innerDict[i].sort(function (a, b) {
+    //console.log("sortData disabled");
+    for (let i = 0; i < htmlBodyList.length; i++) {
+      innerDict[i].sort((a, b) => {
         return a[1] - b[1];
       });
     }
   }
-  for (let i = 0; i < tempArr.length; i++) {
+  for (let i = 0; i < htmlBodyList.length; i++) {
     let ret = "\n";
     for (let infos of innerDict[i]) {
-      ret += infos[2] + "\n";
+      ret += `${infos[2]}\n`;
     }
-    tempArr[i].innerHTML = ret;
+    htmlBodyList[i].innerHTML = ret;
   }
-}
+};
 
-function repl() {
-  let arr = document.getElementsByClassName("panel-body");
-  tempArr = arr;
-  for (let i = 0; i < tempArr.length; i++) {
+const repl = () => {
+  htmlBodyList = document.getElementsByClassName("panel-body");
+  console.log(htmlBodyList);
+  for (let i = 0; i < htmlBodyList.length; i++) {
     innerDict[i] = [];
-    let now = tempArr[i].innerHTML;
-    let str = tempArr[i].innerText;
+    const now = htmlBodyList[i].innerHTML;
+    const str = htmlBodyList[i].innerText;
     let problemshtml = now.split("/a>");
     let problems = str.split(" ");
     let ret = "\n";
@@ -105,17 +107,19 @@ function repl() {
       let instr = parseInt(problems[j]);
       if (instr in dict) {
         problemshtml[j] = problemshtml[j].replace(
-          instr + "<",
-          `${lvcolor[dict[instr]]}${instr}${END}</a>`
+          `${instr}<`,
+          `${lvcolor[dict[instr]]}${instr}</span></a>`
         );
+        // console.log(problemshtml[j]);
         innerDict[i].push([dict[instr], instr, problemshtml[j]]);
       }
-      ret += problemshtml[j] + "\n";
+      ret += `${problemshtml[j]}\n`;
     }
-    tempArr[i].innerHTML = ret;
+    htmlBodyList[i].insertAdjacentHTML("afterbegin", ret);
+    console.log(ret);
   }
 
   chrome.storage.local.get("enabled", (data) => {
-    sort(data);
+    sortData(data);
   });
-}
+};
