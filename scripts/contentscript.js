@@ -45,9 +45,9 @@ const lvcolor = {
   30: RUBY,
 };
 
-let dict = {};
+const dict = {};
 
-const htmlBodyList = [];
+const htmlBodyList = document.getElementsByClassName("panel-body");
 
 const url = `https://swoonpract1.herokuapp.com/swoon`;
 fetch(url)
@@ -94,8 +94,7 @@ const sortData = (data) => {
 };
 
 const repl = () => {
-  htmlBodyList = document.getElementsByClassName("panel-body");
-  console.log(htmlBodyList);
+  // htmlBodyList = document.getElementsByClassName("panel-body");
   for (let i = 0; i < htmlBodyList.length; i++) {
     innerDict[i] = [];
     const now = htmlBodyList[i].innerHTML;
@@ -110,13 +109,11 @@ const repl = () => {
           `${instr}<`,
           `${lvcolor[dict[instr]]}${instr}</span></a>`
         );
-        // console.log(problemshtml[j]);
         innerDict[i].push([dict[instr], instr, problemshtml[j]]);
       }
       ret += `${problemshtml[j]}\n`;
     }
-    htmlBodyList[i].insertAdjacentHTML("afterbegin", ret);
-    console.log(ret);
+    htmlBodyList[i].innerHTML = ret;
   }
 
   chrome.storage.local.get("enabled", (data) => {
