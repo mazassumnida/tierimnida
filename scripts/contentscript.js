@@ -1,17 +1,14 @@
-chrome.runtime.sendMessage({ type: "showPageAction" });
-
-let END = "</span>";
-let ZERO = "<span style='color:#000000'>";
-let BRONZE = "<span style='color:#8B4513'>";
-let SILVER = "<span style='color:#5A78AF'>";
-let GOLD = "<span style='color:#FFAF0A'>";
-let PLATINIUM = "<span style='color:#22D6B2'>";
-let DIAMOND = "<span style='color:#00AFFF'>";
-let RUBY = "<span style='color:#FF5675'>";
-
-var innerDict = {};
-
-let lvcolor = {
+'use strict';
+chrome.runtime.sendMessage({ type: 'showPageAction' });
+var END = '</span>';
+var ZERO = "<span style='color:#000000'>";
+var BRONZE = "<span style='color:#8B4513'>";
+var SILVER = "<span style='color:#5A78AF'>";
+var GOLD = "<span style='color:#FFAF0A'>";
+var PLATINIUM = "<span style='color:#22D6B2'>";
+var DIAMOND = "<span style='color:#00AFFF'>";
+var RUBY = "<span style='color:#FF5675'>";
+var lvcolor = {
   0: ZERO,
   1: BRONZE,
   2: BRONZE,
@@ -44,78 +41,76 @@ let lvcolor = {
   29: RUBY,
   30: RUBY,
 };
-
+var innerDict = {};
 var dict = {};
-
-let url = `https://swoonpract1.herokuapp.com/swoon`;
+var htmlBodyList = document.getElementsByClassName('panel-body');
+var url = 'https://swoonpract1.herokuapp.com/swoon';
 fetch(url)
-  .then((res) => res.json())
-  .then((data) => {
-    for (key in data) {
+  .then(function (res) {
+    return res.json();
+  })
+  .then(function (data) {
+    for (var key in data) {
       dict[key] = data[key];
     }
     repl();
   });
-
-chrome.extension.onMessage.addListener(function (msg, sender, sendResponse) {
-  if (msg.action === "TOGGLE") {
-    chrome.storage.local.get("enabled", (data) => {
-      sort(data);
+chrome.runtime.onMessage.addListener(function (msg) {
+  console.log(msg);
+  if (msg.action === 'TOGGLE') {
+    chrome.storage.local.get('enabled', function (data) {
+      sortData(data);
     });
   }
 });
-
-function sort(data) {
+var sortData = function (data) {
   if (data.enabled) {
-    //console.log("data sort");
-    for (let i = 0; i < tempArr.length; i++) {
+    for (var i = 0; i < htmlBodyList.length; i++) {
       innerDict[i].sort(function (a, b) {
         if (a[0] == b[0]) return a[1] - b[1];
         return b[0] - a[0];
       });
     }
   } else {
-    //console.log("sort disabled");
-    for (let i = 0; i < tempArr.length; i++) {
+    //console.log("sortData disabled");
+    for (var i = 0; i < htmlBodyList.length; i++) {
       innerDict[i].sort(function (a, b) {
         return a[1] - b[1];
       });
     }
   }
-  for (let i = 0; i < tempArr.length; i++) {
-    let ret = "\n";
-    for (let infos of innerDict[i]) {
-      ret += infos[2] + "\n";
+  for (var i = 0; i < htmlBodyList.length; i++) {
+    var ret = '\n';
+    for (var _i = 0, _a = innerDict[i]; _i < _a.length; _i++) {
+      var infos = _a[_i];
+      ret += infos[2] + '\n';
     }
-    tempArr[i].innerHTML = ret;
+    htmlBodyList[i].innerHTML = ret;
   }
-}
-
-function repl() {
-  let arr = document.getElementsByClassName("panel-body");
-  tempArr = arr;
-  for (let i = 0; i < tempArr.length; i++) {
+};
+var repl = function () {
+  // htmlBodyList = document.getElementsByClassName("panel-body");
+  for (var i = 0; i < htmlBodyList.length; i++) {
     innerDict[i] = [];
-    let now = tempArr[i].innerHTML;
-    let str = tempArr[i].innerText;
-    let problemshtml = now.split("/a>");
-    let problems = str.split(" ");
-    let ret = "\n";
-    for (let j = 0; j < problemshtml.length; j++) {
-      let instr = parseInt(problems[j]);
+    var now = htmlBodyList[i].innerHTML;
+    var str = htmlBodyList[i].innerText;
+    var problemshtml = now.split('/a>');
+    var problems = str.split(' ');
+    var ret = '\n';
+    for (var j = 0; j < problemshtml.length; j++) {
+      var instr = parseInt(problems[j]);
       if (instr in dict) {
         problemshtml[j] = problemshtml[j].replace(
-          instr + "<",
-          `${lvcolor[dict[instr]]}${instr}${END}</a>`
+          instr + '<',
+          '' + lvcolor[dict[instr]] + instr + '</span></a>',
         );
         innerDict[i].push([dict[instr], instr, problemshtml[j]]);
       }
-      ret += problemshtml[j] + "\n";
+      ret += problemshtml[j] + '\n';
     }
-    tempArr[i].innerHTML = ret;
+    htmlBodyList[i].innerHTML = ret;
   }
-
-  chrome.storage.local.get("enabled", (data) => {
-    sort(data);
+  chrome.storage.local.get('enabled', function (data) {
+    sortData(data);
   });
-}
+};
