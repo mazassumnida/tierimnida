@@ -1,0 +1,26 @@
+{
+  "name": "tierimnida",
+  "version": "1.0.0",
+  "description": "BOJ 유저 정보란의 문제 번호들을 해당 문제의 티어색으로 칠해주는 확장",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CO0Ki3/tierimnida.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CO0Ki3/tierimnida/issues"
+  },
+  "homepage": "https://github.com/CO0Ki3/tierimnida#readme",
+  "devDependencies": {
+    "@types/jquery": "^3.5.7",
+    "typescript": "^4.4.4"
+  },
+  "dependencies": {
+    "@types/chrome": "0.0.159"
+  }
+}
