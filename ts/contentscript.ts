@@ -1,6 +1,6 @@
-chrome.runtime.sendMessage({ type: "showPageAction" });
+chrome.runtime.sendMessage({ type: 'showPageAction' });
 
-const END = "</span>";
+const END = '</span>';
 const ZERO = "<span style='color:#000000'>";
 const BRONZE = "<span style='color:#8B4513'>";
 const SILVER = "<span style='color:#5A78AF'>";
@@ -9,7 +9,7 @@ const PLATINIUM = "<span style='color:#22D6B2'>";
 const DIAMOND = "<span style='color:#00AFFF'>";
 const RUBY = "<span style='color:#FF5675'>";
 
-const lvcolor: {[key: number]: string} = {
+const lvcolor: { [key: number]: string } = {
   0: ZERO,
   1: BRONZE,
   2: BRONZE,
@@ -43,11 +43,11 @@ const lvcolor: {[key: number]: string} = {
   30: RUBY,
 };
 
-let innerDict: {[type: string]: any} = {};
+let innerDict: { [type: string]: any } = {};
 
-const dict: {[key: string]: number} = {};
+const dict: { [key: string]: number } = {};
 
-const htmlBodyList = document.getElementsByClassName("panel-body");
+const htmlBodyList = document.getElementsByClassName('problem-list');
 
 const url = `https://swoonpract1.herokuapp.com/swoon`;
 fetch(url)
@@ -59,15 +59,15 @@ fetch(url)
     repl();
   });
 
-chrome.runtime.onMessage.addListener((msg: { action: string; }) => {
-  if (msg.action === "TOGGLE") {
-    chrome.storage.local.get("enabled", (data) => {
+chrome.runtime.onMessage.addListener((msg: { action: string }) => {
+  if (msg.action === 'TOGGLE') {
+    chrome.storage.local.get('enabled', (data) => {
       sortData(data);
     });
   }
 });
 
-const sortData = (data: { [type: string]: number | boolean; }) => {
+const sortData = (data: { [type: string]: number | boolean }) => {
   if (data.enabled) {
     for (let i = 0; i < htmlBodyList.length; i++) {
       innerDict[i].sort((a: number[], b: number[]) => {
@@ -84,7 +84,7 @@ const sortData = (data: { [type: string]: number | boolean; }) => {
     }
   }
   for (let i = 0; i < htmlBodyList.length; i++) {
-    let ret = "\n";
+    let ret = '\n';
     for (let infos of innerDict[i]) {
       ret += `${infos[2]}\n`;
     }
@@ -98,15 +98,15 @@ const repl = () => {
     innerDict[i] = [];
     const now = htmlBodyList[i].innerHTML;
     const str = (<HTMLElement>htmlBodyList[i]).innerText;
-    let problemshtml = now.split("/a>");
-    let problems = str.split(" ");
-    let ret = "\n";
+    let problemshtml = now.split('/a>');
+    let problems = str.split(' ');
+    let ret = '\n';
     for (let j = 0; j < problemshtml.length; j++) {
       let instr: number = parseInt(problems[j]);
       if (instr in dict) {
         problemshtml[j] = problemshtml[j].replace(
           `${instr}<`,
-          `${lvcolor[dict[instr]]}${instr}</span></a>`
+          `${lvcolor[dict[instr]]}${instr}</span></a>`,
         );
         innerDict[i].push([dict[instr], instr, problemshtml[j]]);
       }
@@ -115,7 +115,7 @@ const repl = () => {
     htmlBodyList[i].innerHTML = ret;
   }
 
-  chrome.storage.local.get("enabled", (data) => {
+  chrome.storage.local.get('enabled', (data) => {
     sortData(data);
   });
 };
